@@ -76,36 +76,26 @@ module top
         P     = 8'b1100_1110,
         G     = 8'b1011_1100,
         A     = 8'b1110_1110,
+		  M     = 8'b0110_1110,
+		  I     = 8'b0110_0000,
+		  X     = 8'b0110_1111,
         space = 8'b0000_0000
     }
     seven_seg_encoding_e;
 
-    assign abcdefgh = key [0] ? P : F;
-    assign digit    = w_digit' (key [1] ? 2'b10 : 2'b01);
+   // seven_seg_encoding_e letter;
 
-    // Exercise 1: Display the first letters
-    // of your first name and last name instead.
-
-    // assign abcdefgh = ...
-    // assign digit    = ...
-
-    // Exercise 2: Display letters of a 4-character word
-    // using this code to display letter of FPGA as an example
-
-    /*
-    seven_seg_encoding_e letter;
-
-    always_comb
-      case (4' (key))
-      4'b1000: letter = F;
-      4'b0100: letter = P;
-      4'b0010: letter = G;
-      4'b0001: letter = A;
-      default: letter = space;
-      endcase
-
-    assign abcdefgh = letter;
-    assign digit    = w_digit' (key);
-    */
+  always_comb
+begin
+    case (sw)
+        6'b100000: abcdefgh =  M ; 
+        6'b010000: abcdefgh =  A ; 
+        6'b001000: abcdefgh =  X ; 
+        6'b000100: abcdefgh =  I ; 
+        6'b000010: abcdefgh =  M ; 
+        default: abcdefgh = space; // если не включен или включено больше одного
+    endcase
+    digit = sw; // отображение значений на дисплее
+end
 
 endmodule
